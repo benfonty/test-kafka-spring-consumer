@@ -13,6 +13,8 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 
+import java.util.List;
+
 @SpringBootApplication
 @Flogger
 public class TestKafkaSpringApplication {
@@ -29,9 +31,11 @@ public class TestKafkaSpringApplication {
     }
 
     @KafkaListener(topics = {"tweets"}, containerFactory = "myContainerFactory")
-    public void listen(ConsumerRecord<Long, Tweet> record, Acknowledgment acknowledgment, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
-        log.atFine().log("received tweet %d in partition %d partition %d", record.key(), record.partition(), partition);
-        log.atFine().log("tweet = %s", record.value().toString());
+    public void listen(List<ConsumerRecord<Long, Tweet>> records, Acknowledgment acknowledgment) {
+        log.atFine().log("reveived %d tweets", records.size());
+        /*for (ConsumerRecord<Long, Tweet> record: records) {
+            log.atFine().log("received tweet %d in partition %d", record.key(), record.partition());
+        }*/
         acknowledgment.acknowledge();
     }
 
