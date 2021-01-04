@@ -1,0 +1,8 @@
+logging:
+  level:
+    ROOT: INFO
+    com.bfonty: DEBUG
+
+kafka:
+  bootstrap: 127.0.0.1:9092
+  groupid: anotherGroupId
